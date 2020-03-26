@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="phonebook">
+        <form id="phonebook__form" novalidate="">
+            <div id="phonebook__form__adder">
+                <input id="inputName" placeholder="Введите имя..." type="text" />
+                <input autocomplete="off" class="form-control" enable="" id="inputTel" placeholder="Введите телефон..." type="tel" />
+                <input id="inputEmail" placeholder="Введите почту..." type="email" />
+                <input class="btn btn-success" disbaled="" id="buttonAdd" type="button" value="Добавить контакт" /> </div>
+        </form>
+        <table id="phonebook__result" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <td style="padding: .500em;"> <span style="display: inline-block; float: left;"> Имя:</span>
+                        <div style="display: inline-block; float: right;"> </div>
+                    </td>
+                    <td style="padding: .500em;"> <span style="display: inline-block; float: left;"> Телефон:</span>
+                        <div style="display: inline-block; float: right;"> </div>
+                    </td>
+                    <td style="padding: .500em;"> <span style="display: inline-block; float: left;"> Почта:</span>
+                        <div style="display: inline-block; float: right;"> </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
