@@ -1,0 +1,336 @@
+<html>
+
+<head>
+    <title>COSMO WARS</title>
+    <style>
+        body {
+            background: #202028;
+            color: #fff;
+            font-family: sans-serif;
+            font-size: 2em;
+            text-align: center;
+        }
+        
+        canvas {
+            border: solid .2em #fff;
+            height: 80vh;
+        }
+        
+        #backbtn,
+        #pausebtn {
+            text-align: center;
+            vertical-align: middle;
+            border: 2px solid goldenrod;
+            border-radius: 7px;
+            background-color: black;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: "Courier New";
+            width: 5em;
+            margin: 5px auto;
+        }
+        
+        #but1,
+        #but2 {
+            text-align: center;
+            vertical-align: middle;
+            border: 2px solid goldenrod;
+            border-radius: 7px;
+            background-color: black;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: "Courier New";
+            width: 5em;
+            margin: 5px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>COSMO WARS</h1>
+    <div style="position:fixed;left:110px;top:60px;" id="backbtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor = 'black'" onclick="showCredits()">Back</div>
+    <div style="position:fixed;left:110px;top:150px;" id="pausebtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor = 'black'" onclick="pauseGame()">Pause</div>
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <script src='game.js'></script>
+    <script language="JavaScript">
+        var can = document.getElementById("canvas");
+        var c = can.getContext('2d');
+        player.width = 46;
+        player.height = 46;
+        let pause = false;
+        var ship_image;
+        var bomb_image;
+        var bullet_image;
+        var ship_select = 'images/Hunter1.png';
+        loadResources();
+
+        function loadResources() {
+            ship_image = new Image();
+            ship_image.scr = ship_select;
+            ship_image.src = "images/Hunter1.png";
+            bomb_image = new Image();
+            bomb_image.src = "images/bomb.png";
+            bullet_image = new Image();
+            bullet_image.src = "images/bullets.png";
+        }
+        let score = 0;
+        let lives = 3;
+        var limit = 3;
+        
+        var showCredits = function () {
+            document.location = 'menu.html';
+        };
+
+        function mainLoop() {
+            if (pause == false) {
+                var c = can.getContext('2d');
+                updateGame();
+                updateBackground();
+                updateEnemies();
+                updatePlayer();
+                updatePlayerBullets();
+                updateEnemyBullets();
+                checkCollisions();
+                drawBackground(c);
+                drawEnemies(c);
+                drawPlayer(c);
+                drawEnemyBullets(c);
+                drawPlayerBullets(c);
+                drawOverlay(c);
+                drawscore(c);
+                drawHealth(c);
+                
+            }
+        }
+        // =========== player ============
+        function drawPlayer(c) {
+            if (player.state == "dead") return;
+            if (player.state == "hit") {
+                c.fillStyle = "black";
+                c.fillRect(player.x, player.y, player.width, player.height);
+                drawPlayerExplosion(c);
+                return;
+            }
+            c.drawImage(ship_image, 25, 1, 23, 23, // исходные координаты
+                player.x, player.y, player.width, player.height // конечные координаты
+            );
+        }
+
+        function pauseGame() {
+            if (pause == false) pause = true;
+            else if (pause == true) pause = false;
+            if (pause == true) clearTimeout(rofl);
+            else processTimer();
+        }
+
+        function firePlayerBullet() {
+            // создаём новую пулю
+            playerBullets.push({
+                x: player.x
+                , x: player.x + 14
+                , y: player.y - 5
+                , width: 10
+                , height: 10
+                , width: 20
+                , height: 20
+                , counter: 0
+            , });
+        }
+        var particles = [];
+
+        function drawPlayerExplosion(c) {
+            // старт
+            if (player.counter == 0) {
+                particles = []; // стираем все старые значения
+                for (var i = 0; i < 50; i++) {
+                    particles.push({
+                        x: player.x + player.width / 2
+                        , y: player.y + player.height / 2
+                        , xv: (Math.random() - 0.5) * 2.0 * 5.0, // скорость по x
+                        yv: (Math.random() - 0.5) * 2.0 * 5.0, // скорость по y
+                        age: 0
+                    , });
+                }
+            }
+            if (player.counter > 0) {
+                for (var i = 0; i < particles.length; i++) {
+                    var p = particles[i];
+                    p.x += p.xv;
+                    p.y += p.yv;
+                    var v = 255 - p.age * 3;
+                    c.fillStyle = "rgb(" + v + "," + v + "," + v + ")";
+                    c.fillRect(p.x, p.y, 3, 3);
+                    p.age++;
+                }
+            }
+        };
+
+        function drawscore(c) {
+            c.fillStyle = "red";
+            c.font = "20px Arial";
+            c.fillText("Score: " + score, 480, 380);
+        }
+
+        function drawHealth(c) {
+            c.fillStyle = "red";
+            c.font = "20px Arial";
+            c.fillText("Health: " + health, 480, 350);
+        }
+
+        function drawPlayerBullets(c) {
+            c.fillStyle = "blue";
+            for (i in playerBullets) {
+                var bullet = playerBullets[i];
+                var count = Math.floor(bullet.counter / 4);
+                var xoff = (count % 4) * 24;
+                //c.fillRect(bullet.x, bullet.y, bullet.width,bullet.height);
+                c.drawImage(bullet_image, xoff + 10, 0 + 9, 8, 8, bullet.x, bullet.y, bullet.width, bullet.height);
+            }
+        }
+        // =========== background ============
+        function drawBackground(c) {
+            c.fillStyle = "black";
+            c.fillRect(0, 0, can.width, can.height);
+        }
+        // =========== enemies ===============
+        function drawEnemies(c) {
+            for (var i in enemies) {
+                var enemy = enemies[i];
+                if (enemy.state == "alive") {
+                    c.fillStyle = "green";
+                    drawEnemy(c, enemy, 15);
+                }
+                if (enemy.state == "hit") {
+                    c.fillStyle = "purple";
+                    enemy.shrink--;
+                    drawEnemy(c, enemy, enemy.shrink);
+                    score++;
+                }
+                // вероятно, никогда не будет вызвана
+                if (enemy.state == "dead") {
+                    c.fillStyle = "black";
+                    c.drawEnemy(c, enemy, 15);
+                }
+            }
+        }
+
+        function drawEnemy(c, enemy, radius) {
+            if (radius <= 0) radius = 1;
+            var theta = enemy.counter;
+            c.save();
+            c.translate(0, 30);
+            // рисуем фоновый круг
+            circlePath(c, enemy.x, enemy.y, radius * 2);
+            c.fill();
+            // рисуем волнистые точки
+            for (var i = 0; i < 10; i++) {
+                var xoff = Math.sin(toRadians(theta + i * 36 * 2)) * radius;
+                var yoff = Math.sin(toRadians(theta + i * 36 * 1.5)) * radius;
+                circlePath(c, enemy.x + xoff, enemy.y + yoff, 3);
+                c.fillStyle = "white";
+                c.fill();
+            }
+            c.restore();
+        }
+
+        function toRadians(d) {
+            return d * Math.PI * 2.0 / 360.0;
+        }
+
+        function circlePath(c, x, y, r) {
+            c.beginPath();
+            c.moveTo(x, y);
+            c.arc(x, y, r, 0, Math.PI * 2);
+        }
+
+        function createEnemyBullet(enemy) {
+            return {
+                x: enemy.x
+                , y: enemy.y + enemy.height
+                , width: 4
+                , height: 12
+                , width: 30
+                , height: 30
+                , counter: 0
+            , }
+        }
+
+        function processTimer() {
+            if (limit > 0) {
+                 rofl = setTimeout("processTimer()", 1000);
+                limit--;
+            }
+            else {
+                game.state = "over";
+                player.state = "dead";
+                health=0;
+                drawPlayerExplosion(c);
+                
+            }
+            var limit_div = parseInt(limit / 60); // минуты
+            var limit_mod = limit - limit_div * 60; // секунды
+            // строка с оставшимся временем
+            limit_str = "&nbsp;&nbsp;";
+            if (limit_div < 10) limit_str = limit_str + "0";
+            limit_str = limit_str + limit_div + ":";
+            if (limit_mod < 10) limit_str = limit_str + "0";
+            limit_str = limit_str + limit_mod + "&nbsp;&nbsp;";
+            // вывод времени
+            el_timer = document.getElementById("timer");
+            if (el_timer) el_timer.innerHTML = limit_str;
+            if (game.state == "playing" && enemies.length == 0) {
+            }
+        }
+        processTimer();
+
+        function stopTimer() {
+            
+            clearTimeout(rofl);
+        }
+        
+                
+
+        function drawEnemyBullets(c) {
+            for (var i in enemyBullets) {
+                var bullet = enemyBullets[i];
+                c.fillStyle = "black";
+                c.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                var xoff = (bullet.counter % 9) * 12 + 1;
+                var yoff = 1;
+                c.drawImage(bomb_image, xoff, yoff, 11, 11, bullet.x, bullet.y, bullet.width, bullet.height);
+            }
+        }
+        /**/
+        // =========== overlay ===============
+        function drawOverlay(c) {
+            if (game.state == "over") {
+                c.fillStyle = "white";
+                c.font = "Bold 40pt Arial";
+                c.fillText("GAME OVER", 140, 200);
+                c.font = "14pt Arial";
+                c.fillText("press space to play again", 190, 250);
+            }
+            if (game.state == "won") {
+                c.fillStyle = "white";
+                c.font = "Bold 40pt Arial";
+                c.fillText("SWARM DEFEATED", 50, 200);
+                c.font = "14pt Arial";
+                c.fillText("press space to play again", 190, 250);
+            }
+        }
+        doSetup();
+        setInterval(mainLoop, 1000 / 30);
+    </script>
+</body>
+
+</html>
+<!--таймер-->
+<style>
+    div#timer {
+        color: aqua;
+        left: 20px;
+    }
+</style>
+<div id="timer"></div>
