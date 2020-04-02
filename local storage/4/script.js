@@ -4,12 +4,12 @@ let phonebook = {
     , arrInputId2: [document.getElementById('inputName'), document.getElementById('inputTel'), document.getElementById('inputEmail'), document.getElementById('buttonAdd')]
     , arrRegExpName: [/^[a-z][a-z0-9]*?([-_][a-z0-9]+){0,2}$/i
       , /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
-      , /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(|com||[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/im
+      , /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(com[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/im
     ]
+    , listenerTargetAdder() {
+        phonebook.arrInputId2[3].addEventListener('click', phonebook.addContact);
+    }
     , addContact() {
-        for (let i = 1; i < phonebook.arrInputId2.length; i++) {
-            phonebook.arrInputId2[i].disabled = true;
-        }
         var arrInputValue = []
             , newTr = document.createElement('tr')
             , newTd;
