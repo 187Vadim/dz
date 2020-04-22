@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 7 task 14</title>
+  </head>
+  <body>
+    <div id="app">
+      <template v-if="show==true">
+        <p>Абзац</p>
+        <p>Абзац</p>
+        <p>Абзац</p>
+      </template>
+      <button v-on:click="hide">
+        {{ show ? 'Скрыть' : 'Показать' }}
+      </button>
+    </div>
+
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data: {
+          show: true,
+        },
+        methods: {
+          hide: function () {
+            this.show = !this.show;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
