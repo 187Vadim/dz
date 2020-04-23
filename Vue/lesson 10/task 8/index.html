@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 10 task 8</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Выберите ваш родной язык</h1>
+      <input name="radio" type="radio" v-model="type" value="ru" />ru
+      <input name="radio" type="radio" v-model="type" value="en" />en
+      <input name="radio" type="radio" v-model="type" value="de" />de
+      <p>Ваш родной язык: {{ type }}</p>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data: {
+          type: "",
+        },
+      });
+    </script>
+  </body>
+</html>

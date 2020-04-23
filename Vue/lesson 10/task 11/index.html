@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 10 task 11</title>
+  </head>
+  <body>
+    <div id="app">
+      <li>{{ options }}</li>
+      <select v-model="selected">
+        <option v-for="option in options">{{ option }}</option>
+      </select>
+      <p>Вы выбрали: {{ selected }}</p>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data: {
+          selected: "",
+          options: [
+            "один",
+            "два",
+            "три",
+            "четыре",
+            "пять",
+            "шесть",
+            "семь",
+            "восемь",
+            "девять",
+          ], // массив
+        },
+      });
+    </script>
+  </body>
+</html>

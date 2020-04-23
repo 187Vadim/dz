@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 10 task 2</title>
+  </head>
+  <body>
+    <div id="app">
+      <textarea v-model="newItem"></textarea>
+      <ul>
+        <li v-for="item in items">{{ item }}</li>
+      </ul>
+      <button v-on:click="addItem">Сделать массив</button>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data: {
+          newItem: "",
+          items: [],
+        },
+        methods: {
+          addItem: function () {
+            this.items = this.newItem.split(" ");
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
