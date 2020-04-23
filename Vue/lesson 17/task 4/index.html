@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 17 task 4</title>
+  </head>
+  <body>
+    <div id="div">
+      <p>
+        <span v-html="text"></span>
+      </p>
+      <button v-on:click="tagText">Вывод текста</button>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#div",
+        data: {
+          text: "",
+        },
+        methods: {
+          tagText: function () {
+            this.text =
+              '<strike>Дана</strike> <b>кнопка</b> <font size="10">и</font> <font color="green">абзац</font>';
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

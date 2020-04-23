@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 17 task 3</title>
+  </head>
+  <body>
+    <div id="div">
+      <p v-once>{{ text }}</p>
+      <p>{{ text }}</p>
+      <button v-on:click="changeParagraph">
+        Заменить абзац
+      </button>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#div",
+        data: {
+          text:
+            "Пусть в data есть свойство text, содержащее какой-нибудь текст.",
+        },
+        methods: {
+          changeParagraph: function () {
+            this.text = ":)";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

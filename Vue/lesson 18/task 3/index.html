@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 18 task 3</title>
+  </head>
+  <body>
+    <div id="div">
+      <a
+        href=""
+        v-on:click.prevent
+        v-on:click.left="click('left')"
+        v-on:click.middle="click('middle')"
+        v-on:click.right="click('right')"
+        >Кнопка</a
+      >
+      <p>{{ button }}</p>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#div",
+        data: {
+          button: "",
+        },
+        methods: {
+          click: function (typeOfButton) {
+            this.button = typeOfButton;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Lesson 17 task 1</title>
+  </head>
+  <body>
+    <div id="div">
+      <a href="https://www.google.ru/" v-on:click.prevent v-on:click="addText">Ссылка</a>
+      <p>{{ text }}</p>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#div",
+        data: {
+          text: "",
+        },
+        methods: {
+          addText: function () {
+            if (this.text == "") this.text = "Some text";
+            else this.text = "";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
