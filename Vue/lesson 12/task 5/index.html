@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lesson 12 task 5</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="div">
+      <p v-bind:class="{valid: isValid, invalid: !isValid}">Абзац</p>
+    </div>
+    <script>
+      let app = new Vue({
+        el: "#div",
+        data: {
+          isValid: false,
+        },
+      });
+    </script>
+  </body>
+</html>
